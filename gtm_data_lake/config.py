@@ -43,6 +43,8 @@ class DataLakeConfig:
         "conversations": "gtm.conversations",
         "emails": "gtm.emails",
         "product_usage": "gtm.product_usage",
+        "calendar_events": "gtm.calendar_events",
+        "agent_data": "gtm.agent_data"
     }
     
     # API Configuration
@@ -68,4 +70,12 @@ class DataLakeConfig:
     @classmethod
     def get_product_usage_path(cls, year: int, month: int, day: int) -> Path:
         """Get the path for product usage data."""
-        return cls.get_storage_path("bronze", "product_usage", year, month, day) 
+        return cls.get_storage_path("bronze", "product_usage", year, month, day)
+    
+    def get_calendar_path(self, year: int, month: int, day: int) -> Path:
+        """Get the path for calendar events."""
+        return self.BRONZE_PATH / "calendar_events" / str(year) / f"{month:02d}" / f"{day:02d}"
+    
+    def get_agent_path(self, agent_type: str, year: int, month: int, day: int) -> Path:
+        """Get the path for agent data."""
+        return self.BRONZE_PATH / "agent_data" / agent_type / str(year) / f"{month:02d}" / f"{day:02d}" 

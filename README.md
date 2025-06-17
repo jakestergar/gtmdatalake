@@ -110,4 +110,64 @@ The system is designed to integrate with LakeSail for high-performance data proc
 5. Create a Pull Request
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+# Example API calls
+POST /api/v1/query
+{
+    "question": "Show me all customers who had meetings this week"
+}
+
+POST /api/v1/query
+{
+    "question": "What are the top 10 opportunities forecasted to close this year?"
+}
+
+POST /api/v1/query
+{
+    "question": "What is the most common role in sales conversations?"
+}
+
+POST /api/v1/query
+{
+    "question": "Show me 5 examples of successful sales calls"
+}
+
+POST /api/v1/ingest/calendar-event
+{
+    "event_id": "meeting_123",
+    "title": "Product Demo with Acme Corp",
+    "start_time": "2024-03-20T14:00:00Z",
+    "end_time": "2024-03-20T15:00:00Z",
+    "description": "Demo of our AI platform for the sales team",
+    "attendees": [
+        {"email": "john@acme.com", "name": "John Doe", "role": "Sales Director"},
+        {"email": "jane@acme.com", "name": "Jane Smith", "role": "CTO"}
+    ],
+    "organizer": {"email": "sales@yourcompany.com", "name": "Sales Team"},
+    "opportunity_id": "opp_456",
+    "company_domain": "acme.com",
+    "meeting_type": "product_demo"
+}
+
+POST /api/v1/ingest/agent-data
+{
+    "agent_id": "lead_qual_123",
+    "agent_type": "lead_qualification",
+    "timestamp": "2024-03-20T14:00:00Z",
+    "data": {
+        "domain": "acme.com",
+        "company_size": "1000-5000",
+        "geography": "North America",
+        "product_usage": {
+            "active_users": 50,
+            "engagement_score": 0.8
+        },
+        "qualification_status": "MQL",
+        "confidence_score": 0.9
+    },
+    "metadata": {
+        "source": "web_form",
+        "form_id": "enterprise_inquiry_123"
+    }
+} 

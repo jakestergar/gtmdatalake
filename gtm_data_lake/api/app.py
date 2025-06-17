@@ -48,6 +48,27 @@ class ProductUsageData(BaseModel):
     events: List[Dict[str, Any]]
     session_summary: Optional[Dict[str, Any]] = None
 
+class CalendarEventData(BaseModel):
+    event_id: str
+    title: str
+    start_time: str
+    end_time: str
+    description: Optional[str] = None
+    location: Optional[str] = None
+    attendees: List[Dict[str, Any]]
+    organizer: Dict[str, Any]
+    opportunity_id: Optional[str] = None
+    company_domain: Optional[str] = None
+    meeting_type: Optional[str] = None
+    metadata: Optional[Dict[str, Any]] = None
+
+class AgentData(BaseModel):
+    agent_id: str
+    agent_type: str
+    timestamp: str
+    data: Dict[str, Any]
+    metadata: Optional[Dict[str, Any]] = None
+
 # API endpoints
 @app.post("/ingest/conversation")
 async def ingest_conversation(
@@ -125,6 +146,58 @@ async def ingest_product_usage(
         }
     except Exception as e:
         logger.error(f"Error ingesting product usage data: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/ingest/calendar-event")
+async def ingest_calendar_event(
+    data: CalendarEventData,
+    background_tasks: BackgroundTasks
+) -> Dict[str, Any]:
+    """Ingest a new calendar event."""
+    try:
+        # Process with AI in background
+        background_tasks.add_task(
+            ai_processor.process_calendar_event,
+            data.dict()
+        )
+        
+        # Store in data lake
+        success = ingestion_pipeline.ingest_calendar_event(data.dict())
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to ingest calendar event")
+        
+        return {
+            "status": "success",
+            "message": f"Calendar event {data.event_id} ingested successfully"
+        }
+    except Exception as e:
+        logger.error(f"Error ingesting calendar event: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/ingest/agent-data")
+async def ingest_agent_data(
+    data: AgentData,
+    background_tasks: BackgroundTasks
+) -> Dict[str, Any]:
+    """Ingest data from an AI agent."""
+    try:
+        # Process with AI in background
+        background_tasks.add_task(
+            ai_processor.process_agent_data,
+            data.dict()
+        )
+        
+        # Store in data lake
+        success = ingestion_pipeline.ingest_agent_data(data.dict())
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to ingest agent data")
+        
+        return {
+            "status": "success",
+            "message": f"Agent data from {data.agent_type} agent {data.agent_id} ingested successfully"
+        }
+    except Exception as e:
+        logger.error(f"Error ingesting agent data: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/health")

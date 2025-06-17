@@ -93,6 +93,32 @@ class StorageClient:
         
         return self.store_json(path, usage_data)
     
+    def store_calendar_event(self, event_data: Dict[str, Any]) -> bool:
+        """Store calendar event data in the bronze layer."""
+        timestamp = datetime.fromisoformat(event_data['start_time'])
+        path = self.config.get_calendar_path(
+            timestamp.year,
+            timestamp.month,
+            timestamp.day
+        ) / f"event_{event_data['event_id']}.json"
+        
+        return self.store_json(path, event_data)
+    
+    def store_agent_data(self, agent_data: Dict[str, Any]) -> bool:
+        """Store agent data in the bronze layer."""
+        timestamp = datetime.fromisoformat(agent_data['timestamp'])
+        agent_type = agent_data['agent_type']
+        
+        # Create path based on agent type and timestamp
+        path = self.config.get_agent_path(
+            agent_type,
+            timestamp.year,
+            timestamp.month,
+            timestamp.day
+        ) / f"{agent_type}_{agent_data['agent_id']}.json"
+        
+        return self.store_json(path, agent_data)
+    
     def list_objects(self, prefix: str) -> list:
         """List objects in the bucket with the given prefix."""
         try:

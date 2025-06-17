@@ -1,31 +1,38 @@
-# Core Data Processing
-lakesail
-pyiceberg==0.5.0
-delta-spark==3.0.0
-pandas==2.1.4
-numpy==1.24.3
-
-# Storage and Vector DB
-boto3==1.34.0
-pinecone-client==2.2.4
-weaviate-client==4.4.0
-
-# AI and ML
-langchain==0.1.0
-sentence-transformers==2.2.2
-transformers==4.36.2
-torch==2.1.2
-
 # API and Web
-fastapi==0.109.0
-uvicorn==0.27.0
-python-dotenv==1.0.0
-
-# Data Processing and Streaming
+fastapi==0.68.1
+uvicorn==0.15.0
+python-dotenv==0.19.0
+pydantic==1.8.2
+requests==2.26.0
+pytest==6.2.5
+httpx==0.19.0
+python-multipart==0.0.5
+aiofiles==0.7.0
+sqlalchemy==1.4.23
+alembic==1.7.1
+psycopg2-binary==2.9.1
 kafka-python==2.0.2
-pyarrow==14.0.1
+
+# Data Processing and Analysis
+pandas==2.2.3
+numpy==2.0.2
+scikit-learn==0.24.2
+spacy==3.1.3
+nltk==3.6.3
+langchain==0.0.267
+openai==0.27.8
+anthropic==0.5.0
+sentence-transformers==2.2.2
+
+# Storage
+boto3==1.18.64
+minio==7.1.0
+pyarrow==6.0.1
+deltalake==0.7.0
 
 # Utilities
 python-dateutil==2.8.2
-pydantic==2.5.3
-tqdm==4.66.1 
+tqdm==4.66.1
+
+# LakeSail (from GitHub fork)
+git+https://github.com/jakestergar/sail.git
